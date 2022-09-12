@@ -1,25 +1,25 @@
-export const items = [
+const items = [
   {
     title: "Home",
     path: "/home",
     // Optional
-    elemBefore: "account-circle",
+    elemBefore: () => <Icon name="coffee" />,
   },
   {
     title: "About",
-    path: "/about",
-    elemBefore: "alert-octagram",
+    itemId: "/about",
+    elemBefore: () => <Icon name="user" />,
     subNav: [
       {
         title: "Projects",
-        path: "/about/projects",
+        itemId: "/about/projects",
         // Optional
-        elemBefore: "alien",
+        elemBefore: () => <Icon name="cloud-snow" />,
       },
       {
         title: "Members",
-        path: "/about/members",
-        elemBefore: "apple-icloud",
+        itemId: "/about/members",
+        elemBefore: () => <Icon name="coffee" />,
       },
     ],
   },
@@ -29,7 +29,7 @@ export const items = [
     subNav: [
       {
         title: "Teams",
-        path: "android",
+        path: "/another/teams",
         // Optional
         // elemBefore: () => <Icon name="calendar" />
       },

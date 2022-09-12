@@ -1,24 +1,31 @@
 <template>
   <v-app>
-    <v-app-bar style="min-height: 56px" app color="white" elevation="2" dark>
+    <v-app-bar color="white" elevation="0" dark>
       <v-row no-gutters align="center">
-        <v-col xs="12" sm="12" md="6">
+        <v-col xs="12" sm="12" md="4" lg="2" class="custom-col">
           <div class="d-flex align-center">
             <v-img
               alt="Vuetify Logo"
               class="shrink mr-2"
               contain
               src="https://technext.github.io/elaadmin/images/logo.png"
-              transition="scale-transition"
+              transition="transition"
               width="160"
             />
-            <v-btn icon color="#99abb4">
-              <v-icon>mdi-magnify</v-icon>
-            </v-btn>
+            <v-app-bar-nav-icon
+              color="#99abb4"
+              @click.stop="handleDrawer"
+            ></v-app-bar-nav-icon>
           </div>
         </v-col>
-        <v-col xs="12" sm="12" md="6">
-          <v-row align="center" justify="end" color="grey lighten-2" flat tile>
+        <v-col xs="12" sm="12" md="8" lg="10" class="custom-col">
+          <v-row
+            align="center"
+            justify="end"
+            flat
+            tile
+            style="flex-wrap: nowrap"
+          >
             <v-btn icon color="#99abb4">
               <v-icon>mdi-magnify</v-icon>
             </v-btn>
@@ -52,6 +59,10 @@
         </v-col>
       </v-row>
     </v-app-bar>
+    <div class="left-side-bar">
+      <LeftSideBar />
+    </div>
+    <LeftMenuDrawer :drawer="drawer" :group="group" :setDrawer="setDrawer" />
 
     <v-main>
       <router-view />
@@ -60,17 +71,50 @@
 </template>
 
 <script>
+import LeftMenuDrawer from "./components/LeftMenu/LeftMenuDrawer.vue";
+import LeftSideBar from "./components/LeftMenu/LeftSideBar.vue";
 export default {
   name: "App",
-
   data: () => ({
-    //
+    drawer: false,
+    group: null,
   }),
+  components: { LeftMenuDrawer, LeftSideBar },
+  methods: {
+    setDrawer(val) {
+      this.drawer = val;
+    },
+    handleDrawer() {
+      this.drawer = !this.drawer;
+    },
+  },
 };
 </script>
 
 <style lang="scss">
+// .v-app-bar.v-app-bar--fixed {
+//   position: relative;
+// }
+
 .v-app-bar {
   min-height: 56px !important;
+  position: fixed;
+}
+
+.v-toolbar__content {
+  height: auto !important;
+  padding: 0 !important;
+}
+
+.custom-col {
+  border-bottom: 1px solid rgb(210, 209, 209);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 32px !important;
+}
+
+.v-navigation-drawer {
+  top: 56px !important;
 }
 </style>

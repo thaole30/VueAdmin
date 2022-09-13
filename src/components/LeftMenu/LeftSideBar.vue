@@ -76,6 +76,9 @@
 <script>
 export default {
   name: "LeftSideBar",
+  props: {
+    isOpenSidebar: Boolean,
+  },
 
   data() {
     return {

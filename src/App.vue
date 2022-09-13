@@ -16,6 +16,11 @@
               color="#99abb4"
               @click.stop="handleDrawer"
             ></v-app-bar-nav-icon>
+
+            <v-app-bar-nav-icon
+              color="#99abb4"
+              @click="toggleSidebar"
+            ></v-app-bar-nav-icon>
           </div>
         </v-col>
         <v-col xs="12" sm="12" md="8" lg="10" class="custom-col">
@@ -60,7 +65,7 @@
       </v-row>
     </v-app-bar>
     <div class="left-side-bar">
-      <LeftSideBar />
+      <LeftSideBar :isOpenSidebar="isOpenSidebar" />
     </div>
     <LeftMenuDrawer :drawer="drawer" :group="group" :setDrawer="setDrawer" />
 
@@ -78,6 +83,7 @@ export default {
   data: () => ({
     drawer: false,
     group: null,
+    isOpenSidebar: false,
   }),
   components: { LeftMenuDrawer, LeftSideBar },
   methods: {
@@ -86,6 +92,10 @@ export default {
     },
     handleDrawer() {
       this.drawer = !this.drawer;
+    },
+    toggleSidebar() {
+      console.log("toggle sidebar");
+      this.isOpenSidebar = !this.isOpenSidebar;
     },
   },
 };
@@ -116,5 +126,10 @@ export default {
 
 .v-navigation-drawer {
   top: 56px !important;
+}
+
+.v-main__wrap,
+.v-main {
+  margin-top: 56px;
 }
 </style>

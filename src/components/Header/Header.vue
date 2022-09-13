@@ -22,7 +22,14 @@
           ></v-app-bar-nav-icon>
         </div>
       </v-col>
-      <v-col xs="12" sm="12" md="8" lg="10" class="custom-col">
+      <v-col
+        xs="12"
+        sm="12"
+        md="8"
+        lg="10"
+        class="custom-col"
+        :class="$vuetify.breakpoint.name === 'xs' && 'd-none'"
+      >
         <v-row align="center" justify="end" flat tile style="flex-wrap: nowrap">
           <v-btn icon color="#99abb4">
             <v-icon>mdi-magnify</v-icon>

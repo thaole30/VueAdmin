@@ -5,8 +5,16 @@
       @eventToggleSidebar="toggleSidebar"
     />
 
+    <h3 class="title is-3">
+      Width: {{ window.width }} px<br />
+      Height: {{ window.height }} px
+    </h3>
+
     <div class="left-side-bar">
-      <LeftSideBar :isOpenSidebar="isOpenSidebar" />
+      <LeftSideBar
+        :isOpenSidebar="isOpenSidebar"
+        :isMobile="$vuetify.breakpoint.name === 'xs' ? true : false"
+      />
     </div>
     <LeftMenuDrawer :drawer="drawer" :group="group" :setDrawer="setDrawer" />
 
@@ -25,7 +33,12 @@ export default {
   data: () => ({
     drawer: false,
     group: null,
-    isOpenSidebar: false,
+    isOpenSidebar: true,
+    window: {
+      width: 0,
+      height: 0,
+    },
+    breakpoint: "",
   }),
   components: { LeftMenuDrawer, LeftSideBar, Header },
   methods: {
@@ -39,6 +52,25 @@ export default {
     },
     toggleMenuDrawer() {
       this.drawer = !this.drawer;
+    },
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+      this.breakpoint = this.$vuetify.breakpoint.name;
+    },
+  },
+
+  created() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
+  },
+  watch: {
+    // whenever question changes, this function will run
+    breakpoint: function (newValue) {
+      console.log("breakpoint", newValue);
     },
   },
 };
@@ -74,5 +106,20 @@ export default {
 .v-main__wrap,
 .v-main {
   margin-top: 56px;
+}
+// .v-navigation-drawer--open {
+//   width: 300px !important;
+// }
+
+.v-list-item {
+  padding: 0px !important;
+}
+
+.v-list-group {
+  width: 100%;
+}
+
+.v-list-group__header {
+  padding: 0 20px !important;
 }
 </style>

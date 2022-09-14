@@ -21,34 +21,52 @@
           <p class="type-title" v-if="isOpenSidebar">{{ item.type }}</p>
 
           <v-list-item v-for="each in item.data" :key="each.title" link>
-            <v-list-group no-action append-icon="mdi-chevron-right">
-              <template v-slot:activator>
-                <v-list-item-icon @click="toggleFloatMenu(each.title)">
-                  <v-icon v-text="`mdi-${each.icon}`"></v-icon>
-                  <v-icon
-                    v-if="!isOpenSidebar"
-                    v-text="`mdi-chevron-right`"
-                  ></v-icon>
-                </v-list-item-icon>
-                <div class="float-menu" v-if="!isOpenSidebar">
-                  <span>123</span>
-                </div>
-                <v-list-item-content>
-                  <v-list-item-title>{{ each.title }}</v-list-item-title>
-                </v-list-item-content>
+            <v-menu offset-x close-on-click="callback">
+              <template v-slot:activator="{ on, attrs }">
+                <v-list-group
+                  v-bind="attrs"
+                  v-on="!isOpenSidebar ? on : ''"
+                  no-action
+                  append-icon="mdi-chevron-right"
+                >
+                  <template v-slot:activator>
+                    {{ attrs[`aria-expanded`] }}
+                    <!-- {{ attrs[`aria-haspopup`] }} -->
+                    <v-list-item-icon>
+                      <v-icon v-text="`mdi-${each.icon}`"></v-icon>
+                      <v-icon v-if="attrs[`aria-expanded`] === false"
+                        >mdi-chevron-right</v-icon
+                      >
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                      <v-list-item-title>{{ each.title }}</v-list-item-title>
+                    </v-list-item-content>
+                  </template>
+                  <v-list-item
+                    v-for="subItem in each.subNav"
+                    :key="subItem.title"
+                    link
+                    class="subnav-item"
+                  >
+                    <v-list-item-icon>
+                      <v-icon v-text="`mdi-${subItem.icon}`"></v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title
+                      v-text="subItem.title"
+                    ></v-list-item-title>
+                  </v-list-item>
+                </v-list-group>
               </template>
-              <v-list-item
-                v-for="subItem in each.subNav"
-                :key="subItem.title"
-                link
-                class="subnav-item"
-              >
-                <v-list-item-icon>
-                  <v-icon v-text="`mdi-${subItem.icon}`"></v-icon>
-                </v-list-item-icon>
-                <v-list-item-title v-text="subItem.title"></v-list-item-title>
-              </v-list-item>
-            </v-list-group>
+              <v-list>
+                <v-list-item
+                  v-for="(sub, index) in floatMenu.subNav"
+                  :key="index"
+                >
+                  <v-list-item-title>{{ sub.title }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-list-item>
         </div>
       </v-list>
@@ -191,6 +209,30 @@ export default {
           ],
         },
       ],
+
+      floatMenu: {
+        title: "Components",
+        path: "/components",
+        // Optional
+        icon: "cog-outline",
+        subNav: [
+          {
+            title: "Button",
+            path: "/button",
+            icon: "gesture-tap-button",
+          },
+          {
+            title: "Badges",
+            path: "/badge",
+            icon: "police-badge-outline",
+          },
+          {
+            title: "Cards",
+            path: "/card",
+            icon: "card-multiple",
+          },
+        ],
+      },
     };
   },
   methods: {
@@ -199,6 +241,9 @@ export default {
       if (!this.isOpenSidebar) {
         console.log("menuTitle", menuTitle);
       }
+    },
+    callback(data) {
+      console.log("cbbbbb", data);
     },
   },
 
@@ -215,6 +260,9 @@ export default {
     },
     breakpointName: function (newValue) {
       console.log("breakpointName", newValue);
+    },
+    on: function (newValue) {
+      console.log("onnnnn", newValue);
     },
   },
 };
@@ -239,5 +287,30 @@ export default {
 
 .move-down-sidebar {
   margin-top: 56px;
+}
+
+.float-menu {
+  // position: relative !important;
+  // width: auto !important;
+  // height: auto !important;
+  width: 200px !important;
+  height: 200px !important;
+  overflow: visible !important;
+  display: block !important;
+  clip: unset !important;
+  background-color: aqua;
+  left: 76px;
+}
+
+.float-menu .v-list.v-sheet.v-list--dense {
+  width: 200px !important;
+  height: 200px !important;
+}
+
+.float-menu .v-navigation-drawer--mini-variant {
+  position: absolute !important;
+  clip: unset !important;
+  width: auto !important;
+  height: auto !important;
 }
 </style>

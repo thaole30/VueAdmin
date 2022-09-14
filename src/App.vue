@@ -76,6 +76,10 @@ export default {
 // .v-app-bar.v-app-bar--fixed {
 //   position: relative;
 // }
+.v-navigation-drawer__content,
+.v-navigation-drawer {
+  overflow: visible !important;
+}
 
 .v-app-bar {
   min-height: 56px !important;

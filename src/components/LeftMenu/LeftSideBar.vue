@@ -4,10 +4,8 @@
       app
       v-model="drawer"
       :mini-variant="!isOpenSidebar"
-      style="position = 'fixed';"
       :permanent="!isMobile"
-      :absolute="isMobile"
-      :temporary="isMobile"
+      :class="breakpointName === 'sm' && 'move-down-sidebar'"
     >
       <v-list dense>
         <v-list-item style="padding: 0 20px !important">
@@ -20,14 +18,21 @@
           </v-list-item-content>
         </v-list-item>
         <div v-for="item in menus" :key="item.type" link>
-          <p class="type-title">{{ item.type }}</p>
+          <p class="type-title" v-if="isOpenSidebar">{{ item.type }}</p>
 
           <v-list-item v-for="each in item.data" :key="each.title" link>
-            <v-list-group no-action>
+            <v-list-group no-action append-icon="mdi-chevron-right">
               <template v-slot:activator>
-                <v-list-item-icon>
+                <v-list-item-icon @click="toggleFloatMenu(each.title)">
                   <v-icon v-text="`mdi-${each.icon}`"></v-icon>
+                  <v-icon
+                    v-if="!isOpenSidebar"
+                    v-text="`mdi-chevron-right`"
+                  ></v-icon>
                 </v-list-item-icon>
+                <div class="float-menu" v-if="!isOpenSidebar">
+                  <span>123</span>
+                </div>
                 <v-list-item-content>
                   <v-list-item-title>{{ each.title }}</v-list-item-title>
                 </v-list-item-content>
@@ -57,18 +62,14 @@ export default {
   props: {
     isOpenSidebar: Boolean,
     isMobile: Boolean,
+    breakpointName: String,
   },
 
   data() {
     return {
       drawer: true,
       mini: true,
-      cruds: [
-        ["Create", "mdi-plus-outline"],
-        ["Read", "mdi-file-outline"],
-        ["Update", "mdi-update"],
-        ["Delete", "mdi-delete"],
-      ],
+
       menus: [
         {
           type: "UI ELEMENTS",
@@ -192,6 +193,14 @@ export default {
       ],
     };
   },
+  methods: {
+    toggleFloatMenu(menuTitle) {
+      // now we have access to the native event
+      if (!this.isOpenSidebar) {
+        console.log("menuTitle", menuTitle);
+      }
+    },
+  },
 
   // computed: {
   //   isMiniSidebar() {
@@ -203,6 +212,9 @@ export default {
     // whenever question changes, this function will run
     isMobile: function (newValue) {
       console.log("isMobile", newValue);
+    },
+    breakpointName: function (newValue) {
+      console.log("breakpointName", newValue);
     },
   },
 };
@@ -219,5 +231,13 @@ export default {
   display: flex;
   align-items: center;
   margin-bottom: 0 !important;
+}
+
+.v-navigation-drawer--mini-variant {
+  width: 76px !important;
+}
+
+.move-down-sidebar {
+  margin-top: 56px;
 }
 </style>

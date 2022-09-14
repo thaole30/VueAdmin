@@ -5,15 +5,11 @@
       @eventToggleSidebar="toggleSidebar"
     />
 
-    <h3 class="title is-3">
-      Width: {{ window.width }} px<br />
-      Height: {{ window.height }} px
-    </h3>
-
     <div class="left-side-bar">
       <LeftSideBar
         :isOpenSidebar="isOpenSidebar"
         :isMobile="$vuetify.breakpoint.name === 'xs' ? true : false"
+        :breakpointName="$vuetify.breakpoint.name"
       />
     </div>
     <LeftMenuDrawer :drawer="drawer" :group="group" :setDrawer="setDrawer" />

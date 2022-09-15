@@ -3,6 +3,7 @@
     <Header
       @eventToggleMenuDrawer="toggleMenuDrawer"
       @eventToggleSidebar="toggleSidebar"
+      :breakpointName="$vuetify.breakpoint.name"
     />
 
     <div class="left-side-bar">
@@ -13,14 +14,13 @@
         :breakpointName="$vuetify.breakpoint.name"
       />
     </div>
-    <LeftMenuDrawer :drawer="drawer" :group="group" :setDrawer="setDrawer" />
 
     <!-- <transition name="fade">
       <router-view></router-view>
     </transition> -->
-    <v-main>
+    <div class="v-main" :class="handleChangeSize">
       <router-view />
-    </v-main>
+    </div>
   </v-app>
 </template>
 
@@ -64,6 +64,38 @@ export default {
     },
   },
 
+  computed: {
+    handleChangeSize() {
+      if (!this.isOpenSidebar) {
+        switch (this.$vuetify.breakpoint.name) {
+          case "xs":
+            return "main__xs__mini";
+          case "sm":
+            return "main__sm__mini";
+          case "lg":
+            return "main__lg__mini";
+          case "md":
+            return "main__md__mini";
+          default:
+            return "main__xl__mini";
+        }
+      } else {
+        switch (this.$vuetify.breakpoint.name) {
+          case "xs":
+            return "main__xs";
+          case "sm":
+            return "main__sm";
+          case "lg":
+            return "main__lg";
+          case "md":
+            return "main__md";
+          default:
+            return "main__xl";
+        }
+      }
+    },
+  },
+
   created() {
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
@@ -97,10 +129,14 @@ export default {
 .v-toolbar__content {
   height: auto !important;
   padding: 0 !important;
+
+  > .row {
+    border-bottom: 1px solid rgb(210, 209, 209);
+  }
 }
 
 .custom-col {
-  border-bottom: 1px solid rgb(210, 209, 209);
+  // border-bottom: 1px solid rgb(210, 209, 209);
   height: 56px;
   display: flex;
   align-items: center;
@@ -108,11 +144,11 @@ export default {
 }
 
 .v-navigation-drawer {
-  top: 56px !important;
+  top: 58px !important;
 }
 .v-main {
   margin-top: 56px;
-  padding: 0px 0px 0px 256px !important;
+  // padding: 0px 0px 0px 256px !important;
 }
 .v-main__wrap {
   padding: 1.875em;
@@ -132,5 +168,55 @@ export default {
 
 .v-list-group__header {
   padding: 0 20px !important;
+}
+.main {
+  &__xl {
+    padding: 10px 10px;
+    margin-left: 256px;
+    &__mini {
+      padding: 10px 10px;
+      margin-left: 86px;
+    }
+  }
+  &__md {
+    padding: 10px 10px;
+    margin-left: 256px;
+    &__mini {
+      padding: 10px 10px;
+      margin-left: 86px;
+    }
+  }
+  &__md {
+    padding: 10px 10px;
+    margin-left: 256px;
+    &__mini {
+      padding: 10px 10px;
+      margin-left: 86px;
+    }
+  }
+  &__sm {
+    padding: 10px 10px;
+    margin-left: 256px;
+    &__mini {
+      padding: 10px 10px;
+      margin-left: 86px;
+    }
+  }
+  &__lg {
+    padding: 10px 10px;
+    margin-left: 256px;
+    &__mini {
+      padding: 10px 10px;
+      margin-left: 86px;
+    }
+  }
+  &__xs {
+    padding: 10px 10px;
+    margin-top: 50px;
+    &__mini {
+      padding: 10px 10px;
+      margin-top: 50px;
+    }
+  }
 }
 </style>

@@ -47,6 +47,94 @@
             />
           </v-card>
         </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <v-card outlined tile>
+            <CustomCard
+              iconColor="green"
+              icon="mdi-cash"
+              cardTitle="$23569"
+              cardSubtitle="Revenue"
+              :iconSize="50"
+            />
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <v-card outlined tile>
+            <CustomCard
+              iconColor="green"
+              icon="mdi-cash"
+              cardTitle="$23569"
+              cardSubtitle="Revenue"
+              :iconSize="50"
+            />
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <v-card outlined tile>
+            <CustomCard
+              iconColor="green"
+              icon="mdi-cash"
+              cardTitle="$23569"
+              cardSubtitle="Revenue"
+              :iconSize="50"
+            />
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <v-card outlined tile>
+            <CustomCard
+              iconColor="green"
+              icon="mdi-cash"
+              cardTitle="$23569"
+              cardSubtitle="Revenue"
+              :iconSize="50"
+            />
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <v-card outlined tile>
+            <CustomCard
+              iconColor="green"
+              icon="mdi-cash"
+              cardTitle="$23569"
+              cardSubtitle="Revenue"
+              :iconSize="50"
+            />
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <v-card outlined tile>
+            <CustomCard
+              iconColor="green"
+              icon="mdi-cash"
+              cardTitle="$23569"
+              cardSubtitle="Revenue"
+              :iconSize="50"
+            />
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <v-card outlined tile>
+            <CustomCard
+              iconColor="green"
+              icon="mdi-cash"
+              cardTitle="$23569"
+              cardSubtitle="Revenue"
+              :iconSize="50"
+            />
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <v-card outlined tile>
+            <CustomCard
+              iconColor="green"
+              icon="mdi-cash"
+              cardTitle="$23569"
+              cardSubtitle="Revenue"
+              :iconSize="50"
+            />
+          </v-card>
+        </v-col>
       </v-row>
     </v-container>
   </div>

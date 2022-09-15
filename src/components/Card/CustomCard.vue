@@ -46,7 +46,7 @@ export default {
 
 <style lang="scss" scoped>
 .card-custom {
-  max-width: inherit;
+  max-width: inherit !important;
   .v-list-item {
     gap: 20px;
     padding: 0 20px !important;

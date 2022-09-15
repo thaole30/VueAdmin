@@ -7,6 +7,7 @@
 
     <div class="left-side-bar">
       <LeftSideBar
+        @eventUpdateIsOpenSidebar="handleUpdateIsOpenSidebar"
         :isOpenSidebar="isOpenSidebar"
         :isMobile="$vuetify.breakpoint.name === 'xs' ? true : false"
         :breakpointName="$vuetify.breakpoint.name"
@@ -14,6 +15,9 @@
     </div>
     <LeftMenuDrawer :drawer="drawer" :group="group" :setDrawer="setDrawer" />
 
+    <!-- <transition name="fade">
+      <router-view></router-view>
+    </transition> -->
     <v-main>
       <router-view />
     </v-main>
@@ -53,6 +57,10 @@ export default {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
       this.breakpoint = this.$vuetify.breakpoint.name;
+    },
+    handleUpdateIsOpenSidebar() {
+      console.log("gooo");
+      this.isOpenSidebar = !this.isOpenSidebar;
     },
   },
 
@@ -102,11 +110,14 @@ export default {
 .v-navigation-drawer {
   top: 56px !important;
 }
-
-.v-main__wrap,
 .v-main {
   margin-top: 56px;
+  padding: 0px 0px 0px 256px !important;
 }
+.v-main__wrap {
+  padding: 1.875em;
+}
+
 // .v-navigation-drawer--open {
 //   width: 300px !important;
 // }

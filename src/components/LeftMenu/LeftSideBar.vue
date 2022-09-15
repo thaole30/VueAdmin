@@ -2,10 +2,12 @@
   <v-card>
     <v-navigation-drawer
       app
-      v-model="drawer"
+      :value="isOpenSidebar"
       :mini-variant="!isOpenSidebar"
       :permanent="!isMobile"
       :class="breakpointName === 'sm' && 'move-down-sidebar'"
+      :hide-overlay="true"
+      :width="isMobile ? `100%` : '256px'"
     >
       <v-list dense>
         <v-list-item style="padding: 0 20px !important">
@@ -17,11 +19,15 @@
             <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <div v-for="item in menus" :key="item.type" link>
+        <div v-for="item in menus" :key="item.type">
           <p class="type-title" v-if="isOpenSidebar">{{ item.type }}</p>
 
-          <v-list-item v-for="each in item.data" :key="each.title" link>
-            <v-menu offset-x close-on-click="callback">
+          <v-list-item
+            v-for="(each, index) in item.data"
+            :key="each.title"
+            link
+          >
+            <v-menu offset-x>
               <template v-slot:activator="{ on, attrs }">
                 <v-list-group
                   v-bind="attrs"
@@ -30,10 +36,11 @@
                   append-icon="mdi-chevron-right"
                 >
                   <template v-slot:activator>
-                    {{ attrs[`aria-expanded`] }}
+                    <!-- {{ attrs[`aria-expanded`] }} -->
                     <!-- {{ attrs[`aria-haspopup`] }} -->
                     <v-list-item-icon>
                       <v-icon v-text="`mdi-${each.icon}`"></v-icon>
+                      <span>alo</span>
                       <v-icon v-if="attrs[`aria-expanded`] === false"
                         >mdi-chevron-right</v-icon
                       >
@@ -48,6 +55,7 @@
                     :key="subItem.title"
                     link
                     class="subnav-item"
+                    :to="`${each.path}${subItem.path}`"
                   >
                     <v-list-item-icon>
                       <v-icon v-text="`mdi-${subItem.icon}`"></v-icon>
@@ -58,11 +66,9 @@
                   </v-list-item>
                 </v-list-group>
               </template>
-              <v-list>
-                <v-list-item
-                  v-for="(sub, index) in floatMenu.subNav"
-                  :key="index"
-                >
+              <v-list class="sub-float-menu">
+                <v-list-item v-for="(sub, index) in each.subNav" :key="index">
+                  <v-icon>mdi-{{ sub.icon }}</v-icon>
                   <v-list-item-title>{{ sub.title }}</v-list-item-title>
                 </v-list-item>
               </v-list>
@@ -205,6 +211,18 @@ export default {
               title: "Pages",
               path: "/page",
               icon: "book-open-page-variant",
+              subNav: [
+                {
+                  title: "Login",
+                  path: "/login",
+                  icon: "login-variant",
+                },
+                {
+                  title: "Logout",
+                  path: "/logout",
+                  icon: "logout-variant",
+                },
+              ],
             },
           ],
         },
@@ -241,9 +259,6 @@ export default {
       if (!this.isOpenSidebar) {
         console.log("menuTitle", menuTitle);
       }
-    },
-    callback(data) {
-      console.log("cbbbbb", data);
     },
   },
 
@@ -312,5 +327,9 @@ export default {
   clip: unset !important;
   width: auto !important;
   height: auto !important;
+}
+
+.sub-float-menu {
+  padding: 0 16px;
 }
 </style>

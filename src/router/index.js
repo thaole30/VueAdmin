@@ -2,6 +2,10 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import DemoVuetify from "../views/DemoVuetify.vue";
+import ComponentButton from "../views/Components/ComponentButton.vue";
+import ComponentBadge from "../views/Components/ComponentBadge.vue";
+import ComponentCard from "../views/Components/ComponentCard.vue";
+import ParentComponent from "../views/Components/ParentComponent.vue";
 
 Vue.use(VueRouter);
 
@@ -24,6 +28,33 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  },
+  {
+    path: "/but",
+    name: "but",
+    component: ComponentButton,
+    children: [{ path: "buttonhome", name: "buttonhome", component: HomeView }],
+  },
+  {
+    path: "/components",
+    component: ParentComponent,
+    children: [
+      {
+        path: "button",
+        name: "button",
+        component: ComponentButton,
+      },
+      {
+        path: "badge",
+        name: "badge",
+        component: ComponentBadge,
+      },
+      {
+        path: "card",
+        name: "card",
+        component: ComponentCard,
+      },
+    ],
   },
 ];
 

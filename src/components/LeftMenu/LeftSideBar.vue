@@ -2,36 +2,37 @@
   <v-card>
     <v-navigation-drawer
       app
-      :value="isOpenSidebar"
-      :mini-variant="!isOpenSidebar"
+      v-model="propModel"
+      :mini-variant="!isBiggerSidebar"
       :permanent="!isMobile"
-      :class="breakpointName === 'sm' && 'move-down-sidebar'"
+      :class="
+        (breakpointName === 'sm' || breakpointName === 'xs') &&
+        'mode-down-sidebar'
+      "
       :hide-overlay="true"
-      :width="isMobile ? `100%` : '256px'"
+      :width="isMobile && isOpenDrawer ? `100%` : '256px'"
     >
       <v-list dense>
         <v-list-item style="padding: 0 20px !important">
-          <v-list-item-icon>
-            <v-icon>mdi-laptop</v-icon>
-          </v-list-item-icon>
+          <router-link :to="{ name: 'home' }">
+            <v-list-item-icon>
+              <v-icon>mdi-laptop</v-icon>
+            </v-list-item-icon>
+          </router-link>
 
           <v-list-item-content>
             <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <div v-for="item in menus" :key="item.type">
-          <p class="type-title" v-if="isOpenSidebar">{{ item.type }}</p>
+        <div v-for="item in menus" :key="item.type" link>
+          <p class="type-title" v-if="isBiggerSidebar">{{ item.type }}</p>
 
-          <v-list-item
-            v-for="(each, index) in item.data"
-            :key="each.title"
-            link
-          >
+          <v-list-item v-for="each in item.data" :key="each.title" link>
             <v-menu offset-x>
               <template v-slot:activator="{ on, attrs }">
                 <v-list-group
                   v-bind="attrs"
-                  v-on="!isOpenSidebar ? on : ''"
+                  v-on="!isBiggerSidebar ? on : ''"
                   no-action
                   append-icon="mdi-chevron-right"
                 >
@@ -40,7 +41,6 @@
                     <!-- {{ attrs[`aria-haspopup`] }} -->
                     <v-list-item-icon>
                       <v-icon v-text="`mdi-${each.icon}`"></v-icon>
-                      <span>alo</span>
                       <v-icon v-if="attrs[`aria-expanded`] === false"
                         >mdi-chevron-right</v-icon
                       >
@@ -66,9 +66,11 @@
                   </v-list-item>
                 </v-list-group>
               </template>
-              <v-list class="sub-float-menu">
-                <v-list-item v-for="(sub, index) in each.subNav" :key="index">
-                  <v-icon>mdi-{{ sub.icon }}</v-icon>
+              <v-list>
+                <v-list-item
+                  v-for="(sub, index) in floatMenu.subNav"
+                  :key="index"
+                >
                   <v-list-item-title>{{ sub.title }}</v-list-item-title>
                 </v-list-item>
               </v-list>
@@ -84,23 +86,24 @@
 export default {
   name: "LeftSideBar",
   props: {
-    isOpenSidebar: Boolean,
+    isBiggerSidebar: Boolean,
     isMobile: Boolean,
     breakpointName: String,
+    isOpenDrawer: Boolean,
   },
 
   data() {
     return {
-      drawer: true,
+      // drawer: true,
       mini: true,
-
+      path: "",
       menus: [
         {
           type: "UI ELEMENTS",
           data: [
             {
               title: "Components",
-              path: "/components",
+              path: "/component",
               // Optional
               icon: "cog-outline",
               subNav: [
@@ -123,7 +126,7 @@ export default {
             },
             {
               title: "Tables",
-              itemId: "/table",
+              path: "/table",
               icon: "table-large",
               subNav: [
                 {
@@ -211,18 +214,6 @@ export default {
               title: "Pages",
               path: "/page",
               icon: "book-open-page-variant",
-              subNav: [
-                {
-                  title: "Login",
-                  path: "/login",
-                  icon: "login-variant",
-                },
-                {
-                  title: "Logout",
-                  path: "/logout",
-                  icon: "logout-variant",
-                },
-              ],
             },
           ],
         },
@@ -254,19 +245,22 @@ export default {
     };
   },
   methods: {
-    toggleFloatMenu(menuTitle) {
-      // now we have access to the native event
-      if (!this.isOpenSidebar) {
-        console.log("menuTitle", menuTitle);
-      }
+    getPath(data) {
+      return data === this.path;
     },
   },
 
-  // computed: {
-  //   isMiniSidebar() {
-  //     return !this.isOpenSidebar;
-  //   },
-  // },
+  computed: {
+    propModel: {
+      get() {
+        return this.isOpenDrawer;
+      },
+      set(value) {
+        console.log("prop set", value);
+        this.$emit("eventToggleDrawer", value);
+      },
+    },
+  },
 
   watch: {
     // whenever question changes, this function will run
@@ -278,6 +272,18 @@ export default {
     },
     on: function (newValue) {
       console.log("onnnnn", newValue);
+    },
+    watch: {
+      $route(to, from) {
+        console.log("to - from", to, from);
+
+        // if (to.matched[0].path !== undefined) {
+        //   console.log("hahaha");
+        //   this.path = to.matched[0].path;
+        // } else {
+        //   this.path = "";
+        // }
+      },
     },
   },
 };
@@ -329,7 +335,7 @@ export default {
   height: auto !important;
 }
 
-.sub-float-menu {
-  padding: 0 16px;
+.mode-down-sidebar {
+  margin-top: 56px !important;
 }
 </style>

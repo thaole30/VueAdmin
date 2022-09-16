@@ -1,17 +1,20 @@
 <template>
   <v-app>
     <Header
-      @eventToggleMenuDrawer="toggleMenuDrawer"
+      @eventToggleDrawer="toggleMenuDrawer"
       @eventToggleSidebar="toggleSidebar"
       :breakpointName="$vuetify.breakpoint.name"
+      :isOpenDrawer="isOpenDrawer"
     />
 
     <div class="left-side-bar">
       <LeftSideBar
         @eventUpdateIsOpenSidebar="handleUpdateIsOpenSidebar"
-        :isOpenSidebar="isOpenSidebar"
+        :isBiggerSidebar="isBiggerSidebar"
         :isMobile="$vuetify.breakpoint.name === 'xs' ? true : false"
         :breakpointName="$vuetify.breakpoint.name"
+        :isOpenDrawer="isOpenDrawer"
+        @eventToggleDrawer="toggleMenuDrawer"
       />
     </div>
 
@@ -33,13 +36,15 @@ export default {
   data: () => ({
     drawer: false,
     group: null,
-    isOpenSidebar: true,
+    isOpenDrawer: false,
+    isBiggerSidebar: true,
     window: {
       width: 0,
       height: 0,
     },
     breakpoint: "",
   }),
+
   components: { LeftMenuDrawer, LeftSideBar, Header },
   methods: {
     setDrawer(val) {
@@ -48,10 +53,15 @@ export default {
 
     toggleSidebar() {
       console.log("toggle sidebar");
-      this.isOpenSidebar = !this.isOpenSidebar;
+
+      if (this.$vuetify.breakpoint.name === "xs") {
+        this.isOpenDrawer = !this.isOpenDrawer;
+      } else {
+        this.isBiggerSidebar = !this.isBiggerSidebar;
+      }
     },
-    toggleMenuDrawer() {
-      this.drawer = !this.drawer;
+    toggleMenuDrawer(val) {
+      this.isOpenDrawer = val;
     },
     handleResize() {
       this.window.width = window.innerWidth;
@@ -60,13 +70,13 @@ export default {
     },
     handleUpdateIsOpenSidebar() {
       console.log("gooo");
-      this.isOpenSidebar = !this.isOpenSidebar;
+      this.isBiggerSidebar = !this.isBiggerSidebar;
     },
   },
 
   computed: {
     handleChangeSize() {
-      if (!this.isOpenSidebar) {
+      if (!this.isBiggerSidebar) {
         switch (this.$vuetify.breakpoint.name) {
           case "xs":
             return "main__xs__mini";
@@ -99,6 +109,11 @@ export default {
   created() {
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
+    // if (this.$vuetify.breakpoint.name === "xs") {
+    //   this.isBiggerSidebar = false;
+    // } else {
+    //   this.isBiggerSidebar = true;
+    // }
   },
   destroyed() {
     window.removeEventListener("resize", this.handleResize);
@@ -122,25 +137,24 @@ export default {
 }
 
 .v-app-bar {
+  height: 56px !important;
   min-height: 56px !important;
   position: fixed;
+  z-index: 1000;
 }
 
 .v-toolbar__content {
   height: auto !important;
   padding: 0 !important;
-
-  > .row {
-    border-bottom: 1px solid rgb(210, 209, 209);
-  }
 }
 
 .custom-col {
-  // border-bottom: 1px solid rgb(210, 209, 209);
+  border-bottom: 1px solid rgb(210, 209, 209);
   height: 56px;
   display: flex;
   align-items: center;
   padding: 0 32px !important;
+  background-color: white !important;
 }
 
 .v-navigation-drawer {
@@ -149,6 +163,7 @@ export default {
 .v-main {
   margin-top: 56px;
   // padding: 0px 0px 0px 256px !important;
+  background: #f1f2f7;
 }
 .v-main__wrap {
   padding: 1.875em;
@@ -171,51 +186,53 @@ export default {
 }
 .main {
   &__xl {
-    padding: 10px 10px;
+    padding: 1.875em;
     margin-left: 256px;
     &__mini {
-      padding: 10px 10px;
-      margin-left: 86px;
+      padding: 1.875em;
+      margin-left: 76px;
     }
   }
   &__md {
-    padding: 10px 10px;
+    padding: 1.875em;
     margin-left: 256px;
     &__mini {
-      padding: 10px 10px;
-      margin-left: 86px;
+      padding: 1.875em;
+      margin-left: 76px;
     }
   }
   &__md {
-    padding: 10px 10px;
+    padding: 1.875em;
     margin-left: 256px;
     &__mini {
-      padding: 10px 10px;
-      margin-left: 86px;
+      padding: 1.875em;
+      margin-left: 76px;
     }
   }
   &__sm {
-    padding: 10px 10px;
+    padding: 1.875em;
     margin-left: 256px;
+    margin-top: 112px;
     &__mini {
-      padding: 10px 10px;
-      margin-left: 86px;
+      padding: 1.875em;
+      margin-left: 76px;
+      margin-top: 112px;
     }
   }
   &__lg {
-    padding: 10px 10px;
+    padding: 1.875em;
     margin-left: 256px;
     &__mini {
-      padding: 10px 10px;
-      margin-left: 86px;
+      padding: 1.875em;
+      margin-left: 76px;
     }
   }
   &__xs {
-    padding: 10px 10px;
-    margin-top: 50px;
+    padding: 1.875em;
+    margin-top: 116px;
     &__mini {
-      padding: 10px 10px;
-      margin-top: 50px;
+      padding: 1.875em;
+      margin-top: 116px;
     }
   }
 }

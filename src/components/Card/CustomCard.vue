@@ -37,8 +37,8 @@ export default {
       default: 16,
     },
     iconColor: {
-      type: Number,
-      default: 16,
+      type: String,
+      default: "",
     },
   },
 };
@@ -47,9 +47,11 @@ export default {
 <style lang="scss" scoped>
 .card-custom {
   max-width: inherit !important;
+  border: none;
+  box-shadow: 0 0 20px rgb(0 0 0 / 8%);
   .v-list-item {
     gap: 20px;
-    padding: 0 20px !important;
+    padding: 0 10px !important;
   }
 }
 </style>

@@ -30,4 +30,8 @@ export default {
   padding: 1.25em;
   margin: 2rem 0;
 }
+
+.v-sheet.v-card {
+  box-shadow: none !important;
+}
 </style>

@@ -9,19 +9,19 @@
 
     <ProgressCustom
       title="Visits"
-      info="info1"
+      info="3,220 Users (24%)"
       value="35"
       progressColor="green"
     />
     <ProgressCustom
       title="Bounce Rate"
-      info="info2"
+      info="3,220 Users (24%)"
       value="15"
       progressColor="purple"
     />
     <ProgressCustom
       title="Unique Visitors"
-      info="info"
+      info="29,658 Users (60%)"
       value="60"
       progressColor="blue"
     />

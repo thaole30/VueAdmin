@@ -7,6 +7,8 @@ import ComponentBadge from "../views/Components/ComponentBadge.vue";
 import ComponentCard from "../views/Components/ComponentCard.vue";
 import BasicTable from "../views/Tables/BasicTable";
 import DataTable from "../views/Tables/DataTable";
+import Login from "../views/Pages/Login";
+import Register from "../views/Pages/Register";
 import ParentComponent from "../components/ParentComponent.vue";
 
 Vue.use(VueRouter);
@@ -71,6 +73,22 @@ const routes = [
         path: "data",
         name: "data",
         component: DataTable,
+      },
+    ],
+  },
+  {
+    path: "/page",
+    component: ParentComponent,
+    children: [
+      {
+        path: "login",
+        name: "login",
+        component: Login,
+      },
+      {
+        path: "register",
+        name: "register",
+        component: Register,
       },
     ],
   },

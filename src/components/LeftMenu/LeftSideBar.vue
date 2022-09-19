@@ -13,7 +13,7 @@
       :width="isMobile && isOpenDrawer ? `100%` : '256px'"
     >
       <v-list dense>
-        <v-list-item style="padding: 0 20px !important">
+        <!-- <v-list-item style="padding: 0 20px !important">
           <router-link :to="{ name: 'home' }">
             <v-list-item-icon>
               <v-icon>mdi-laptop</v-icon>
@@ -23,17 +23,24 @@
           <v-list-item-content>
             <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
         <div v-for="item in menus" :key="item.type" link>
           <p class="type-title" v-if="isBiggerSidebar">{{ item.type }}</p>
 
-          <v-list-item v-for="each in item.data" :key="each.title" link>
+          <v-list-item
+            active-class="link-active"
+            v-for="each in item.data"
+            :key="each.title"
+            link
+            :to="each.subNav.length === 0 ? `${each.path}` : null"
+          >
             <v-menu offset-x>
               <template v-slot:activator="{ on, attrs }">
                 <v-list-group
                   v-bind="attrs"
-                  v-on="!isBiggerSidebar ? on : ''"
+                  v-on="!isBiggerSidebar && each.subNav.length ? on : ''"
                   no-action
+                  :value="matchPath(each.path)"
                   append-icon="mdi-chevron-right"
                 >
                   <template v-slot:activator>
@@ -52,6 +59,7 @@
                   </template>
                   <v-list-item
                     v-for="subItem in each.subNav"
+                    active-class="link-active"
                     :key="subItem.title"
                     link
                     class="subnav-item"
@@ -66,12 +74,27 @@
                   </v-list-item>
                 </v-list-group>
               </template>
-              <v-list>
+
+              <v-list
+                v-if="each.subNav.length === 0 ? false : true"
+                class="sub-menu-container"
+              >
+                <!-- <v-list-item class="sub-menu__title">
+                  {{ each.title }}
+                </v-list-item> -->
                 <v-list-item
-                  v-for="(sub, index) in floatMenu.subNav"
+                  v-for="(sub, index) in each.subNav"
                   :key="index"
+                  :to="`${each.path}${sub.path}`"
+                  link
                 >
-                  <v-list-item-title>{{ sub.title }}</v-list-item-title>
+                  <v-list-item-icon class="sub-menu__icon">
+                    <v-icon v-text="`mdi-${sub.icon}`"></v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-title
+                    class="sub-menu__text"
+                    v-text="sub.title"
+                  ></v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -93,11 +116,23 @@ export default {
   },
 
   data() {
+    console.log("data");
     return {
       // drawer: true,
       mini: true,
-      path: "",
+      path: "/",
       menus: [
+        {
+          type: null,
+          data: [
+            {
+              title: "Dashboard",
+              icon: "laptop",
+              path: "/",
+              subNav: [],
+            },
+          ],
+        },
         {
           type: "UI ELEMENTS",
           data: [
@@ -214,6 +249,18 @@ export default {
               title: "Pages",
               path: "/page",
               icon: "book-open-page-variant",
+              subNav: [
+                {
+                  title: "Login",
+                  path: "/login",
+                  icon: "login",
+                },
+                {
+                  title: "Register",
+                  path: "/register",
+                  icon: "account-plus-outline",
+                },
+              ],
             },
           ],
         },
@@ -245,7 +292,16 @@ export default {
     };
   },
   methods: {
-    getPath(data) {
+    matchPath(data) {
+      // console.log("methods getPath");
+      console.log(
+        "result",
+        "-----",
+        data,
+        "-----",
+        this.path,
+        data === this.path
+      );
       return data === this.path;
     },
   },
@@ -256,14 +312,27 @@ export default {
         return this.isOpenDrawer;
       },
       set(value) {
-        console.log("prop set", value);
+        // console.log("prop set", value);
         this.$emit("eventToggleDrawer", value);
       },
     },
   },
 
+  created() {
+    console.log("route", this.$route);
+    this.path = this.$route.matched[0].path;
+    console.log("created route", this.path);
+  },
+
   watch: {
-    // whenever question changes, this function will run
+    // $route(to) {
+    //   console.log("voday");
+    //   if (to.matched[0].path !== undefined) {
+    //     this.path = to.matched[0].path;
+    //   } else {
+    //     this.path = "";
+    //   }
+    // },
     isMobile: function (newValue) {
       console.log("isMobile", newValue);
     },
@@ -273,18 +342,6 @@ export default {
     on: function (newValue) {
       console.log("onnnnn", newValue);
     },
-    watch: {
-      $route(to, from) {
-        console.log("to - from", to, from);
-
-        // if (to.matched[0].path !== undefined) {
-        //   console.log("hahaha");
-        //   this.path = to.matched[0].path;
-        // } else {
-        //   this.path = "";
-        // }
-      },
-    },
   },
 };
 </script>
@@ -292,6 +349,9 @@ export default {
 <style lang="scss" scoped>
 .subnav-item {
   padding-left: 56px !important;
+}
+.link-active {
+  background-color: #bcf7da;
 }
 
 .type-title {
@@ -310,6 +370,9 @@ export default {
   margin-top: 56px;
 }
 
+.sub-menu-container {
+  padding: 10px;
+}
 .float-menu {
   // position: relative !important;
   // width: auto !important;

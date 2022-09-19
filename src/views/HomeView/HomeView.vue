@@ -48,17 +48,19 @@
       </v-col>
     </v-row>
     <TrafficHome />
+    <OrdersHome />
   </div>
 </template>
 
 <script>
 import CustomCard from "@/components/Card/CustomCard.vue";
 import TrafficHome from "./Traffic/TrafficHome.vue";
+import OrdersHome from "./Orders/OrdersHome.vue";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",
 
-  components: { CustomCard, TrafficHome },
+  components: { CustomCard, TrafficHome, OrdersHome },
 };
 </script>
 

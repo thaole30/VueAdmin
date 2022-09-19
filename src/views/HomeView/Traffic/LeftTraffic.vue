@@ -27,6 +27,7 @@ import {
   LinearScale,
   CategoryScale,
   PointElement,
+  Filler,
 } from "chart.js";
 
 ChartJS.register(
@@ -36,7 +37,8 @@ ChartJS.register(
   LineElement,
   LinearScale,
   CategoryScale,
-  PointElement
+  PointElement,
+  Filler
 );
 
 export default {
@@ -77,20 +79,32 @@ export default {
   data() {
     return {
       chartData: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-        ],
+        labels: ["January", "February", "March", "April", "May", "June"],
         datasets: [
           {
-            label: "Data One",
-            backgroundColor: "#f87979",
-            data: [40, 39, 10, 40, 39, 80, 40],
+            label: "Bounce Rate",
+            backgroundColor: "rgba(141,151,211, 0.6)",
+            data: [0, 15000, 25000, 15000, 30000, 0],
+            fill: true,
+            tension: 0.5,
+            pointRadius: 0,
+          },
+          {
+            label: "Targeted Visitors",
+            backgroundColor: "rgba(244,134,132, 0.8)",
+            data: [0, 33000, 15000, 20000, 17000, 0],
+            fill: true,
+            tension: 0.5,
+            pointRadius: 0,
+          },
+
+          {
+            label: "Targeted Visitors",
+            backgroundColor: "rgba(145,205,148, 0.6)",
+            data: [0, 17000, 35000, 25000, 22000, 0],
+            fill: true,
+            tension: 0.5,
+            pointRadius: 0,
           },
         ],
       },

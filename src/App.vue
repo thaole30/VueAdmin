@@ -184,6 +184,9 @@ export default {
 .v-list-group__header {
   padding: 0 20px !important;
 }
+// .v-data-table-header {
+//   background-color: red;
+// }
 .main {
   &__xl {
     padding: 1.875em;

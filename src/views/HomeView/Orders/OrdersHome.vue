@@ -1,19 +1,15 @@
 <template>
   <div class="orders-home">
-    <v-container>
-      <!-- Stack the columns on mobile by making one full-width and the other half-width -->
-      <v-row>
-        <v-col cols="12" md="8" style="padding: 0">
-          <div>
-            <div class="title"><b>Orders</b></div>
-            <LeftOrders />
-          </div>
-        </v-col>
-        <v-col cols="12" md="4" style="padding: 0">
-          <div><RightOrders /></div>
-        </v-col>
-      </v-row>
-    </v-container>
+    <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+    <v-row>
+      <v-col cols="12" lg="8">
+        <div class="title"><b>Orders</b></div>
+        <LeftOrders />
+      </v-col>
+      <v-col cols="12" lg="4">
+        <RightOrders />
+      </v-col>
+    </v-row>
   </div>
 </template>
 

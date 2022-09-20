@@ -1,19 +1,17 @@
 <template>
   <div class="bottom-table">
-    <p>August 2018</p>
-    <div>
-      <LineChartGenerator
-        :chart-options="chartOptions"
-        :chart-data="chartData"
-        :chart-id="chartId"
-        :dataset-id-key="datasetIdKey"
-        :plugins="plugins"
-        :css-classes="cssClasses"
-        :styles="styles"
-        :width="width"
-        :height="height"
-      />
-    </div>
+    <p class="title">August 2018</p>
+    <LineChartGenerator
+      :chart-options="chartOptions"
+      :chart-data="chartData"
+      :chart-id="chartId"
+      :dataset-id-key="datasetIdKey"
+      :plugins="plugins"
+      :css-classes="cssClasses"
+      :styles="styles"
+      :width="width"
+      :height="height"
+    />
   </div>
 </template>
 
@@ -61,7 +59,7 @@ export default {
     },
     height: {
       type: Number,
-      default: 250,
+      default: 120,
     },
     cssClasses: {
       default: "",
@@ -84,7 +82,7 @@ export default {
           {
             label: "Data One",
             backgroundColor: "#f87979",
-            data: [40, 39, 10, 40, 39, 80, 40],
+            data: [0, 10, 8, 25, 27, 0, 12],
             // pointRadius: 0,
             pointBackgroundColor: "white",
             borderColor: "white",
@@ -101,6 +99,7 @@ export default {
               drawBorder: false,
               display: false,
             },
+            display: false,
           },
           y: {
             grid: {
@@ -108,14 +107,13 @@ export default {
 
               drawBorder: false,
             },
+            display: false,
           },
         },
+
         plugins: {
           legend: {
             display: false,
-          },
-          tooltips: {
-            enabled: false,
           },
         },
       },
@@ -126,7 +124,8 @@ export default {
 
 <style lang="scss">
 .bottom-table {
-  height: 300px;
-  background-color: rgb(3, 169, 243);
+  .title {
+    color: white;
+  }
 }
 </style>

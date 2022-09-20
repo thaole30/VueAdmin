@@ -2,7 +2,7 @@
   <v-card>
     <v-navigation-drawer
       app
-      v-model="propModel"
+      v-model="sidebar"
       :mini-variant="!isBiggerSidebar"
       :permanent="!isMobile"
       :class="
@@ -307,7 +307,7 @@ export default {
   },
 
   computed: {
-    propModel: {
+    sidebar: {
       get() {
         return this.isOpenDrawer;
       },

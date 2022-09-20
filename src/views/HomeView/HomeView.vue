@@ -49,6 +49,7 @@
     </v-row>
     <TrafficHome />
     <OrdersHome />
+    <TodosHome />
   </div>
 </template>
 
@@ -56,11 +57,12 @@
 import CustomCard from "@/components/Card/CustomCard.vue";
 import TrafficHome from "./Traffic/TrafficHome.vue";
 import OrdersHome from "./Orders/OrdersHome.vue";
+import TodosHome from "./Todos/TodosHome.vue";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Home",
 
-  components: { CustomCard, TrafficHome, OrdersHome },
+  components: { CustomCard, TrafficHome, OrdersHome, TodosHome },
 };
 </script>
 

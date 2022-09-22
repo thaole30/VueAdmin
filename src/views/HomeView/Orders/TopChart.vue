@@ -64,19 +64,24 @@ export default {
   data() {
     return {
       chartData: {
-        labels: ["VueJs", "EmberJs", "ReactJs", "AngularJs"],
+        labels: ["Desktop visits", "Tab visits", "Mobile visits"],
         datasets: [
           {
-            backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#DD1B16"],
-            data: [40, 20, 80, 10],
+            backgroundColor: ["#5C6BC0", "#EF5350", "#66BB6A"],
+            data: [20, 45, 35],
           },
         ],
       },
       chartOptions: {
         responsive: true,
         maintainAspectRatio: false,
-        legend: {
-          position: "right",
+        plugins: {
+          legend: {
+            position: "right",
+            labels: {
+              boxWidth: 10,
+            },
+          },
         },
       },
     };

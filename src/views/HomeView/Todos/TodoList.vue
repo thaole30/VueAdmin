@@ -1,69 +1,35 @@
 <template>
   <ul class="todolist">
-    <li class="todo-item" v-for="(item, index) in todos" :key="item.id">
-      <input
-        style="display: none"
-        type="checkbox"
-        :id="`idinput-${item.id}`"
-        @input="toggleComplete(item.id, $event)"
-      />
-      <label :for="`idinput-${item.id}`">
-        <v-row align="center" justify="start" class="todo-info">
-          <v-checkbox :input-value="item.isComplete"></v-checkbox>
-          <p class="text">{{ item.title }}</p>
-        </v-row>
-      </label>
-      <v-row align="center" justify="end" class="actions-group">
-        <v-btn text icon>
-          <v-icon>mdi-check</v-icon>
-        </v-btn>
-        <v-btn text icon @click="toggleIsEditting(item.id, $event)">
-          <v-icon>mdi-pencil</v-icon>
-        </v-btn>
-        <v-btn text icon @click="deleteTodo(item.id, $event)">
-          <v-icon>mdi-trash-can</v-icon>
-        </v-btn>
-      </v-row>
-    </li>
+    <TodoItem v-for="todo in todos" :key="todo.id" :todo="todo" />
   </ul>
 </template>
-
 <script>
+import { mapState } from "vuex";
+import TodoItem from "./TodoItem.vue";
+
 export default {
   name: "TodoList",
   data() {
     return {
       selectedId: null,
       isEditting: false,
-      todos: [
-        { id: 1, title: "job1", isComplete: true },
-        { id: 2, title: "job2", isComplete: true },
-        { id: 3, title: "job3", isComplete: false },
-        { id: 4, title: "job4", isComplete: true },
-        { id: 5, title: "job5", isComplete: false },
-      ],
-      //   indexTodo: false,
     };
+  },
+  computed: {
+    ...mapState({
+      // arrow functions can make the code very succinct!
+      todos: (state) => state.todos.todos,
+    }),
   },
   methods: {
     updateIdSelected(id, e) {
       console.log("iddd", id, e);
       this.selectedId = id;
     },
-    toggleComplete(id, e) {
-      console.log("iddd", id, e);
-      let index = this.todos.findIndex((item) => item.id === id);
-      this.todos[index].isComplete = !this.todos[index].isComplete;
-    },
+
     toggleIsEditting(id, e) {
       this.selectedId = id;
       this.isEditting = !this.isEditting;
-    },
-    deleteTodo(id, e) {
-      console.log("delete id", id);
-      let index = this.todos.findIndex((item) => item.id === id);
-
-      this.todos.splice(index, 1);
     },
   },
   watch: {
@@ -75,6 +41,7 @@ export default {
     //   },
     // },
   },
+  components: { TodoItem },
 };
 </script>
 

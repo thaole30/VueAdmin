@@ -10,6 +10,7 @@ import DataTable from "../views/Tables/DataTable";
 import Login from "../views/Pages/Login";
 import Register from "../views/Pages/Register";
 import ParentComponent from "../components/ParentComponent.vue";
+import NotFound from "@/pages/NotFound.vue";
 
 Vue.use(VueRouter);
 
@@ -90,6 +91,7 @@ const routes = [
         name: "register",
         component: Register,
       },
+      { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
     ],
   },
 ];

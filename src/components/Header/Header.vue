@@ -26,6 +26,33 @@
       </v-col>
       <v-col xs="12" sm="12" md="8" lg="10" class="custom-col">
         <v-row align="center" justify="end" flat tile style="flex-wrap: nowrap">
+          <div class="auth">
+            <v-btn
+              depressed
+              color="primary"
+              id="signin-btn"
+              @click="
+                handleDialogStatus(true);
+                changeComponent('SigninForm');
+                changePopupTitle('Signin Title');
+              "
+            >
+              Sign In
+            </v-btn>
+
+            <v-btn
+              depressed
+              color="purple"
+              id="signup-btn"
+              @click="
+                handleDialogStatus(true);
+                changeComponent('SignupForm');
+                changePopupTitle('Signup Title');
+              "
+            >
+              Sign Up
+            </v-btn>
+          </div>
           <v-btn icon color="#99abb4">
             <v-icon>mdi-magnify</v-icon>
           </v-btn>
@@ -85,12 +112,14 @@
 </template>
 
 <script>
-import RightHeader from "./RightHeader/RightHeader.vue";
 export default {
   name: "Header",
+  inject: ["handleDialogStatus", "changeComponent", "changePopupTitle"],
+
   props: {
     breakpointName: String,
   },
+
   data: () => ({
     items: [
       { title: "notification 1" },
@@ -114,7 +143,7 @@ export default {
       //   this.isBiggerSidebar = !this.isBiggerSidebar;
     },
   },
-  components: { RightHeader },
+  components: {},
 };
 </script>
 

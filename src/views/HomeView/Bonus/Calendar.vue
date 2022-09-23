@@ -93,7 +93,7 @@
         </v-btn>
       </template> -->
       <v-card>
-        <form>
+        <form @submit.prevent="addEvent">
           <v-card-title>
             <span class="text-h5">Add New Event</span>
           </v-card-title>
@@ -104,7 +104,8 @@
                   <v-text-field
                     v-model="eventName"
                     label="Event Name"
-                    required
+                    ref="eventNameInput"
+                    autofocus
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
@@ -118,28 +119,34 @@
               </v-row>
             </v-container>
           </v-card-text>
+          <v-container>
+            <v-row class="error-container">
+              <v-col cols="6">
+                <div class="form-group-error">
+                  {{ error.eventName }}
+                </div>
+              </v-col>
+              <v-col cols="6">
+                <div class="form-group-error">{{ error.colorSelect }}</div>
+              </v-col>
+            </v-row>
+          </v-container>
+
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="handleCloseModal">
               Close
             </v-btn>
 
-            <v-btn color="blue darken-1" text @click="addEvent">
-              Create event
-            </v-btn>
+            <v-btn color="blue darken-1" type="submit"> Create event </v-btn>
           </v-card-actions>
         </form>
       </v-card>
     </v-dialog>
-
-    <v-btn depressed color="primary" :isOpen="isOpen"> My Button </v-btn>
-
-    <CommonModal />
   </v-row>
 </template>
 
 <script>
-import CommonModal from "../../../components/Common/CommonModal.vue";
 const monthNames = [
   "January",
   "February",
@@ -217,10 +224,18 @@ export default {
       "Party",
     ],
     eventName: "",
-    colorSelect: "orange",
+    colorSelect: "",
     isEditting: false,
     updatedEventName: "",
+    error: {
+      eventName: "",
+      colorSelect: "",
+    },
   }),
+  mounted() {
+    const labelInputRef = this.$refs.eventNameInput;
+    labelInputRef.focus();
+  },
   methods: {
     handleChange(e) {
       console.log(e);
@@ -243,9 +258,47 @@ export default {
         this.checkId(object);
       }
     },
+
+    checkEventNameExist(eventName) {
+      const isExistName = this.events.some((item) => {
+        if (item.name === eventName) {
+          return true;
+        }
+      });
+
+      return isExistName;
+    },
+
     addEvent() {
       console.log("add event");
-      this.dialog = false;
+      let isValidate = false;
+
+      //validate
+      if (!this.eventName) {
+        this.error.eventName = "Please enter event name";
+      } else {
+        this.error.eventName = "";
+        isValidate = true;
+      }
+
+      if (this.checkEventNameExist(this.eventName)) {
+        this.error.eventName = "This name already exist";
+        isValidate = false;
+      }
+      if (!this.colorSelect) {
+        this.error.colorSelect = "Please choose event color";
+        isValidate = false;
+      } else {
+        isValidate = true;
+
+        this.error.colorSelect = "";
+      }
+
+      if (!isValidate) return;
+
+      this.error.eventName = "";
+      this.error.colorSelect = "";
+
       //   this.$vuetify.$touch();
       const newEvent = {
         name: this.eventName,
@@ -258,8 +311,11 @@ export default {
       this.checkId(newEvent);
       console.log("newEvent after check", newEvent);
       this.events.push(newEvent);
+
       this.eventName = "";
       this.colorSelect = "";
+
+      this.dialog = false;
     },
     getEventColor(event) {
       return event.color;
@@ -351,12 +407,18 @@ export default {
       deep: true,
     },
   },
-  components: { CommonModal },
+  components: {},
 };
 </script>
 
 <style lang="scss">
 .v-toolbar__content {
   padding-left: 20px !important;
+}
+
+.form-group-error {
+  margin-top: -20px;
+  font-size: 12px;
+  color: red;
 }
 </style>

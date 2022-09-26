@@ -20,7 +20,13 @@
     <label :for="`idinput-${todo.id}`" v-if="!isEditting">
       <v-row align="center" justify="start" class="todo-info">
         <v-checkbox :input-value="todo.isComplete"></v-checkbox>
-        <span v-if="!isEditting"> {{ todo.title }}</span>
+        <span
+          class="title-todo"
+          :class="{ done_title: todo.isComplete }"
+          v-if="!isEditting"
+        >
+          {{ todo.title }}</span
+        >
       </v-row>
     </label>
     <v-row
@@ -38,6 +44,7 @@
       <v-btn text icon @click="deleteTodo(todo.id)">
         <v-icon>mdi-trash-can</v-icon>
       </v-btn>
+      <v-btn depressed color="error" @click="delTodo"> Del </v-btn>
     </v-row>
   </li>
 </template>
@@ -70,6 +77,9 @@ export default {
         });
       }
     },
+    delTodo() {
+      this.$emit("eventClickDelTodoItem");
+    },
     // toggleComplete(id, e) {
     //   console.log("iddd", id, e);
     //   this.$store.commit(mutation_types.UPDATE_TODO, id);
@@ -101,6 +111,14 @@ li.todo-item {
 
   &:hover {
     background-color: rgb(235, 230, 230);
+  }
+
+  .title-todo {
+    &.done_title {
+      color: green;
+      font-weight: bold;
+      text-decoration: line-through;
+    }
   }
 }
 </style>

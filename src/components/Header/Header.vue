@@ -2,7 +2,15 @@
   <v-app-bar color="white" elevation="0" dark>
     <v-row class="header" no-gutters align="center">
       <v-col xs="12" sm="12" md="4" lg="2" class="custom-col">
-        <div class="d-flex align-center">
+        <v-row
+          align="center"
+          justify-sm="justify-space-between"
+          flat
+          tile
+          :class="isMobile && 'justify-space-between'"
+          style="flex-wrap: nowrap"
+          v-bind:style="isMobile && 'justifyContent: space-between; '"
+        >
           <router-link :to="{ name: 'home' }">
             <v-img
               alt="Vuetify Logo"
@@ -13,16 +21,16 @@
               width="160"
             />
           </router-link>
-          <v-app-bar-nav-icon
+          <!-- <v-app-bar-nav-icon
             color="#99abb4"
             @click.stop="handleDrawer"
-          ></v-app-bar-nav-icon>
+          ></v-app-bar-nav-icon> -->
 
           <v-app-bar-nav-icon
             color="#99abb4"
             @click="toggleSidebar"
           ></v-app-bar-nav-icon>
-        </div>
+        </v-row>
       </v-col>
       <v-col xs="12" sm="12" md="8" lg="10" class="custom-col">
         <v-row align="center" justify="end" flat tile style="flex-wrap: nowrap">
@@ -90,6 +98,7 @@ export default {
   name: "Header",
   props: {
     breakpointName: String,
+    isMobile: Boolean,
   },
   data: () => ({
     items: [

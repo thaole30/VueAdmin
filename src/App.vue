@@ -5,6 +5,7 @@
       @eventToggleSidebar="toggleSidebar"
       :breakpointName="$vuetify.breakpoint.name"
       :isOpenDrawer="isOpenDrawer"
+      :isMobile="$vuetify.breakpoint.name === 'xs' ? true : false"
     />
 
     <div class="left-side-bar">

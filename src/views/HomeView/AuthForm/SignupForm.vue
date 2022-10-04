@@ -15,7 +15,11 @@
     >
       <div class="input-wrapper mb-2">
         <i class="fas fa-user"></i>
-        <input type="text" placeholder="Name" v-model="name" />
+        <input type="text" placeholder="First Name" v-model="firstName" />
+      </div>
+      <div class="input-wrapper mb-2">
+        <i class="fas fa-user"></i>
+        <input type="text" placeholder="Last Name" v-model="lastName" />
       </div>
 
       <div class="input-wrapper mb-2">
@@ -98,7 +102,8 @@ export default {
   data() {
     return {
       email: "",
-      name: "",
+      firstName: "",
+      lastName: "",
       password: "",
       confirmPassword: "",
       isValid: true,
@@ -111,7 +116,8 @@ export default {
       try {
         const newUser = {
           email: this.email,
-          name: this.name,
+          firstName: this.firstName,
+          lastName: this.lastName,
           password: this.password,
           confirmPassword: this.confirmPassword,
         };

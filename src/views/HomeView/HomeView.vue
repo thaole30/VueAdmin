@@ -51,6 +51,7 @@
     <OrdersHome />
     <TodosHome />
     <BonusHome />
+    <AuthDialog :dialog="dialog" :component="component" :email="email" />
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="vue-admin">
     <Header
       @eventToggleDrawer="toggleMenuDrawer"
       @eventToggleSidebar="toggleSidebar"
@@ -25,6 +25,13 @@
     <div class="v-main" :class="handleChangeSize">
       <router-view />
     </div>
+
+    <AuthDialog
+      :popupTitle="popupTitle"
+      :dialog="dialog"
+      :component="component"
+      :email="email"
+    />
   </v-app>
 </template>
 
@@ -32,8 +39,10 @@
 import LeftMenuDrawer from "./components/LeftMenu/LeftMenuDrawer.vue";
 import LeftSideBar from "./components/LeftMenu/LeftSideBar.vue";
 import Header from "./components/Header/Header.vue";
+import AuthDialog from "./components/AuthDialog/AuthDialog.vue";
 export default {
   name: "App",
+
   data: () => ({
     drawer: false,
     group: null,
@@ -44,9 +53,22 @@ export default {
       height: 0,
     },
     breakpoint: "",
+    dialog: false,
+    component: null,
+    popupTitle: "",
+    isLoading: true,
+    email: "",
   }),
 
-  components: { LeftMenuDrawer, LeftSideBar, Header },
+  provide() {
+    return {
+      handleDialogStatus: this.handleDialogStatus,
+      changeComponent: this.changeComponent,
+      changePopupTitle: this.changePopupTitle,
+    };
+  },
+
+  components: { LeftMenuDrawer, LeftSideBar, Header, AuthDialog },
   methods: {
     setDrawer(val) {
       this.drawer = val;
@@ -72,6 +94,17 @@ export default {
     handleUpdateIsOpenSidebar() {
       console.log("gooo");
       this.isBiggerSidebar = !this.isBiggerSidebar;
+    },
+    handleDialogStatus(status) {
+      this.dialog = status;
+    },
+
+    changeComponent(cpn, email) {
+      this.component = cpn;
+      this.email = email;
+    },
+    changePopupTitle(title) {
+      this.popupTitle = title;
     },
   },
 
@@ -238,6 +271,11 @@ export default {
       padding: 1.875em;
       margin-top: 116px;
     }
+  }
+}
+.vue-admin {
+  .v-dialog--fullscreen {
+    top: 112px !important;
   }
 }
 </style>

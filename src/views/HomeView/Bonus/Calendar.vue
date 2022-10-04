@@ -36,7 +36,7 @@
           @click:day="viewDay"
           @change="handleChange"
         ></v-calendar>
-        <v-menu
+        <!-- <v-menu
           key="2"
           v-model="selectedOpen"
           :close-on-content-click="false"
@@ -83,10 +83,11 @@
               </v-btn>
             </v-card-actions>
           </v-card>
-        </v-menu>
+        </v-menu> -->
       </v-sheet>
     </v-col>
-    <v-dialog v-model="dialog" max-width="600px">
+
+    <v-dialog v-model="addEventDialog" max-width="600px">
       <!-- <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" dark v-bind="attrs" v-on="on">
           Open Dialog
@@ -143,10 +144,41 @@
         </form>
       </v-card>
     </v-dialog>
+
+    <v-dialog
+      v-model="selectedOpen"
+      v-if="selectedOpen"
+      persistent
+      max-width="600px"
+    >
+      <detail-event-popup
+        :updatedEventName="updatedEventName"
+        :selectedEvent="selectedEvent"
+        :updateDetailDialogStatus="updateDetailDialogStatus"
+        @eventEditEventByModal="handleEditEventByModal"
+        @eventClickDelEventByModal="handleClickDelEventByModal"
+      />
+    </v-dialog>
+
+    <v-dialog
+      v-model="confirmDialog"
+      v-if="confirmDialog"
+      disabled
+      width="500"
+      persistent
+    >
+      <confirm-dialog
+        class="confirm-dialog"
+        @processConfirmDialog="processConfirmDialog"
+        :confirmDialogInfo="confirmDialogInfo"
+      ></confirm-dialog>
+    </v-dialog>
   </v-row>
 </template>
 
 <script>
+import DetailEventPopup from "./DetailEventPopup.vue";
+import ConfirmDialog from "./../../../components/Common/ConfirmDialog/ConfirmDialog.vue";
 const monthNames = [
   "January",
   "February",
@@ -164,8 +196,8 @@ const monthNames = [
 export default {
   name: "Calendar",
   data: () => ({
-    isOpen: true,
-    dialog: false,
+    addEventDialog: false,
+    confirmDialog: false,
     monthNames,
     focus: "",
     type: "month",
@@ -231,6 +263,12 @@ export default {
       eventName: "",
       colorSelect: "",
     },
+    confirmDialogInfo: {
+      title: "",
+      question: "",
+      detial: "",
+    },
+    checkDialog: "",
   }),
   mounted() {
     const labelInputRef = this.$refs.eventNameInput;
@@ -243,7 +281,7 @@ export default {
     viewDay({ date }) {
       console.log("viewDay", date);
       this.focus = date;
-      this.dialog = true;
+      this.addEventDialog = true;
       // this.selectedOpen = true;
       // this.type = "day";
     },
@@ -267,6 +305,11 @@ export default {
       });
 
       return isExistName;
+    },
+
+    updateDetailDialogStatus(bool) {
+      console.log("handle", bool);
+      this.selectedOpen = bool;
     },
 
     addEvent() {
@@ -315,7 +358,7 @@ export default {
       this.eventName = "";
       this.colorSelect = "";
 
-      this.dialog = false;
+      this.addEventDialog = false;
     },
     getEventColor(event) {
       return event.color;
@@ -378,7 +421,7 @@ export default {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
     handleCloseModal() {
-      this.dialog = false;
+      this.addEventDialog = false;
       this.eventName = "";
       this.colorSelect = "";
     },
@@ -389,14 +432,47 @@ export default {
       this.updatedEventName = "";
       this.isEditting = false;
     },
+    handleEditEventByModal(id, newTitle) {
+      let index = this.events.findIndex((event) => event.id === id);
+      this.events[index].name = newTitle;
+      this.selectedOpen = false;
+    },
     deleteEvent(id) {
       let index = this.events.findIndex((event) => event.id === id);
       this.events.splice(index, 1);
       this.selectedOpen = false;
     },
+    handleClickDelEventByModal(selectedEvent, purposeDialog) {
+      this.confirmDialogInfo = {
+        title: "Are you sure?",
+        question: "Do you want to delete " + selectedEvent.name + "?",
+        detail: "You can not restore this!!!",
+      };
+      this.checkDialog = purposeDialog;
+      this.confirmDialog = true;
+    },
+    async processConfirmDialog(confirm) {
+      if (confirm === "Cancel") {
+        this.confirmDialog = false;
+      }
+      if (confirm === "Ok") {
+        if (this.checkDialog == "deleteEvent") {
+          this.handleDeleteEventByModal();
+        }
+        this.confirmDialog = false;
+      }
+    },
+    handleDeleteEventByModal() {
+      console.log("del func");
+      let index = this.events.findIndex(
+        (event) => event.id === this.selectedEvent.id
+      );
+      this.events.splice(index, 1);
+      this.selectedOpen = false;
+    },
   },
   watch: {
-    dialog: {
+    addEventDialog: {
       handler(newDialog, oldDialog) {
         console.log("newDialog", newDialog);
         if (!newDialog) {
@@ -407,7 +483,7 @@ export default {
       deep: true,
     },
   },
-  components: {},
+  components: { DetailEventPopup, ConfirmDialog },
 };
 </script>
 

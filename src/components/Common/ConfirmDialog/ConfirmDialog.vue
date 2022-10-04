@@ -1,11 +1,11 @@
 <template>
-  <v-card width="360px" class="text-center">
+  <v-card class="text-center">
     <v-icon size="56px" class="rounded-sm" color="#FFC700">
       mdi-alert-circle
     </v-icon>
     <p class="title-text">{{ confirmDialogInfo.title }}</p>
     <p class="content-text">{{ confirmDialogInfo.question }}</p>
-    <p class="content-text">{{ confirmDialogInfo.detail }}</p>
+    <p class="content-text red--text">{{ confirmDialogInfo.detail }}</p>
     <div class="btn-block">
       <v-btn class="btn-yes" @click="ok">OK</v-btn>
       <v-btn class="btn-cancel" @click="cancel">Cancel</v-btn>
